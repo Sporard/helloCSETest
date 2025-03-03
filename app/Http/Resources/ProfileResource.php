@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProfileResource extends ResourceCollection
+class ProfileResource extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -16,8 +16,8 @@ class ProfileResource extends ResourceCollection
     {
         return [
             'id' => $this->id,
-            'last_name' => $this->last_name,
-            'first_name' => $this->first_name,
+            'last_name' => $this->lastName,
+            'first_name' => $this->firstName,
             'image' => $this->image,
             'status' => $this->status,
         ];
