@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -11,8 +12,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property string $lastName
  * @property string $firstName
  * @property string $image
- * @property \Carbon\Traits\Timestamp $created_at
- * @property \Carbon\Traits\Timestamp $updated_at
+ * @property Timestamp $created_at
+ * @property Timestamp $updated_at
  */
 class Profile extends Model
 {
