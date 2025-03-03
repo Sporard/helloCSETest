@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Profile extends Model
 {
 
-    protected $table = "profile";
+    protected $table = "profiles";
 
     protected $connection = "mysql";
 
