@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,10 @@ class ProfileFactory extends Factory
     public function definition(): array
     {
         return [
-            'last_name' => fake()->name(),
-            'first_name' => fake()->name(),
+            'lastName' => fake()->name(),
+            'firstName' => fake()->name(),
             'image' => fake()->image(),
+            'status' => fake()->randomElement(Status::cases())->value,
             'created_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime(),
         ];
