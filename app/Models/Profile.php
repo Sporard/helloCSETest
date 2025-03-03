@@ -27,8 +27,8 @@ class Profile extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'lastname',
-        'firstname',
+        'lastName',
+        'firstName',
         'image',
         'status',
         'created_at',
@@ -49,7 +49,7 @@ class Profile extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
+            get: fn(string $value) => ucfirst($value),
         );
     }
 
@@ -59,7 +59,7 @@ class Profile extends Model
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
+            get: fn(string $value) => ucfirst($value),
         );
     }
 }
