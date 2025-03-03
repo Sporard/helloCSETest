@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('lastName', 255);
             $table->string('firstName', 255);
-            $table->string('status', 255);
+            $table->enum('status', Status::values());
             $table->string('image')->nullable();
             $table->timestamps();
         });
