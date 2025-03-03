@@ -9,10 +9,11 @@ Route::controller(ProfileController::class)
         function () {
             Route::get('', 'index');
             Route::get('/{profile}', 'show');
-            Route::post('/', 'store');
-            Route::put('/{profile}', 'update');
-            Route::delete('/{profile}', 'destroy');
-
+            Route::group(['middleware' => 'auth'], function () {
+                Route::post('/', 'store');
+                Route::put('/{profile}', 'update');
+                Route::delete('/{profile}', 'destroy');
+            });
         }
 
     );
