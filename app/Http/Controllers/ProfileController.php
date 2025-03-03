@@ -18,13 +18,13 @@ class ProfileController extends Controller
         return ProfileResource::collection(Profile::all());
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreProfileRequest $request): ProfileResource
     {
         $profile = Profile::create($request->validated());
+
         return new ProfileResource($profile);
     }
 
@@ -36,13 +36,13 @@ class ProfileController extends Controller
         return new ProfileResource($profile);
     }
 
-
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
         $profile->update($request->validated());
+
         return $profile;
     }
 

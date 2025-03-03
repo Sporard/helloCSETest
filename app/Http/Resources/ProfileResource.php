@@ -15,11 +15,11 @@ class ProfileResource extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "last_name" => $this->last_name,
-            "first_name" => $this->first_name,
-            "image" => $this->image,
-            "status" => $this->status,
+            'id' => $this->id,
+            'last_name' => $this->last_name,
+            'first_name' => $this->first_name,
+            'image' => $this->image,
+            'status' => $this->status,
         ];
     }
 }
