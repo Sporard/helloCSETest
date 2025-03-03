@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Carbon\Traits\Timestamp;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-
 
 /**
  * @property int $id
@@ -19,16 +18,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 class Profile extends Model
 {
-
-
     use HasFactory;
 
-    protected $table = "profiles";
+    protected $table = 'profiles';
 
-    protected $connection = "mysql";
+    protected $connection = 'mysql';
 
-    protected $primaryKey = "id";
-
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'lastname',
@@ -36,14 +32,14 @@ class Profile extends Model
         'image',
         'status',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $casts = [
         'status' => Status::class,
     ];
 
-    protected $attributes =[
+    protected $attributes = [
         'status' => Status::PENDING,
     ];
 
@@ -53,10 +49,9 @@ class Profile extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
+            get: fn (string $value) => ucfirst($value),
         );
     }
-
 
     /**
      * Get profile last name
@@ -64,7 +59,7 @@ class Profile extends Model
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
+            get: fn (string $value) => ucfirst($value),
         );
     }
 }
