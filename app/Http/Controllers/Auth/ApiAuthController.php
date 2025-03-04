@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RefreshTokenRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Services\AuthServices;
@@ -63,6 +64,20 @@ class ApiAuthController extends Controller
             ], 401);
         }
 
+    }
+
+    /**
+     * refresh the token
+     * @throws Exception
+     */
+    public function refresh(RefreshTokenRequest $request): JsonResponse
+    {
+        try {
+            $this->authServices->refreshToken($request->input('refresh_token'));
+            return response()->json('token refreshed', 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     /**
