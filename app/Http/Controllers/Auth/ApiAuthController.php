@@ -18,6 +18,9 @@ class ApiAuthController extends Controller
     {
     }
 
+    /**
+     * Register new user
+     */
     public function register(RegisterRequest $request): JsonResponse
     {
         $newUser = $request->validated();
@@ -25,8 +28,8 @@ class ApiAuthController extends Controller
         $newUser['remember_token'] = Str::random(10);
         $user = User::create($newUser);
         try {
-            $token = $this->authServices->getPassportToken($request->input('email'), $request->input('password'));
-            $user['token'] = $token;
+            $passportToken = $this->authServices->getPassportToken($request->input('email'), $request->input('password'));
+            $user['token'] = $passportToken;
 
             return response()->json($user, 200);
         } catch (Exception $e) {
@@ -46,8 +49,8 @@ class ApiAuthController extends Controller
             $user = Auth::user();
 
             try {
-                $token = $this->authServices->getPassportToken($request->input('email'), $request->input('password'));
-                $user['token'] = $token;
+                $passportToken = $this->authServices->getPassportToken($request->input('email'), $request->input('password'));
+                $user['token'] = $passportToken;
 
                 return response()->json($user, 200);
             } catch (Exception $e) {
