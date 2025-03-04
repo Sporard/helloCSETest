@@ -1,19 +1,27 @@
 <?php
 
+use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::controller(ApiAuthController::class)
+    ->group(function () {
+        Route::post('register', 'register');
+        Route::post('login', 'login');
+        Route::post('refresh', 'refresh');
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::get('me', 'me');
+            Route::post('logout', 'logout');
+        });
+
+    });
 Route::controller(ProfileController::class)
     ->prefix('/profiles')
     ->group(
         function () {
             Route::get('', 'index');
             Route::get('/{profile}', 'show');
-            Route::group(['middleware' => 'auth'], function () {
+            Route::group(['middleware' => 'auth:api'], function () {
                 Route::post('/', 'store');
                 Route::put('/{profile}', 'update');
                 Route::delete('/{profile}', 'destroy');
