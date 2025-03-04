@@ -11,7 +11,10 @@ Route::controller(ApiAuthController::class)
         Route::post('refresh', 'refresh');
         Route::group(['middleware' => 'auth:api'], function () {
             Route::get('me', 'me');
-            Route::post('logout', 'logout');
+            Route::prefix('token')
+                ->group(function () {
+                    Route::post('revoke', 'revokeToken');
+                });
         });
 
     });
