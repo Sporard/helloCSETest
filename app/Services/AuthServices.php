@@ -12,7 +12,7 @@ class AuthServices
      *
      * @throws Exception
      */
-    public function getPassportToken(string $email, string $password): string
+    public function getPassportToken(string $email, string $password): array
     {
         $response = Http::post(env('APP_URL').'/oauth/token', [
             'grant_type' => 'password',
