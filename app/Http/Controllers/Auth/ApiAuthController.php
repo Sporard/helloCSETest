@@ -48,4 +48,17 @@ class ApiAuthController extends Controller
 
         return response()->json(compact('me'), 200);
     }
+
+    /**
+     * logout the user
+     */
+    public function revokeToken(): JsonResponse
+    {
+        Auth::user()->token()->revoke();
+
+        return response()->json([
+            'message' => 'Token revoked',
+        ], 200);
+
+    }
 }
