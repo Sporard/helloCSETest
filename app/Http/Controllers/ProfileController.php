@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\Profile;
+use App\Models\Status;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProfileController extends Controller
@@ -15,7 +16,8 @@ class ProfileController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return ProfileResource::collection(Profile::all());
+
+        return ProfileResource::collection(Profile::where('status', Status::ACTIVE)->get());
     }
 
     /**
