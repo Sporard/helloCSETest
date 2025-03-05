@@ -22,11 +22,16 @@ Route::controller(ProfileController::class)
     ->prefix('/profiles')
     ->group(
         function () {
+            /** @uses ProfileController::index() */
             Route::get('', 'index');
+            /** @uses ProfileController::show() */
             Route::get('/{profile}', 'show');
             Route::group(['middleware' => 'auth:api'], function () {
+                /** @uses ProfileController::store() */
                 Route::post('/', 'store');
+                /** @uses ProfileController::update() */
                 Route::put('/{profile}', 'update');
+                /** @uses ProfileController::destroy() */
                 Route::delete('/{profile}', 'destroy');
             });
         }
