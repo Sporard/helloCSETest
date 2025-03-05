@@ -12,7 +12,6 @@ class StoreProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // TODO add auth
         return true;
     }
 
