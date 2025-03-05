@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Profile;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Profile>
+ * @extends Factory<Profile>
  */
 class ProfileFactory extends Factory
 {
@@ -20,7 +21,7 @@ class ProfileFactory extends Factory
         return [
             'lastName' => fake()->name(),
             'firstName' => fake()->name(),
-            'image' => fake()->image(),
+            'image' => asset(Profile::BASLINE_IMAGE_PROFILE_PATH),
             'status' => fake()->randomElement(Status::cases())->value,
             'created_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime(),

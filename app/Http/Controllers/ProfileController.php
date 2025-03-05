@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\Profile;
 use App\Models\Status;
+use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,15 +27,21 @@ class ProfileController extends Controller
      */
     public function store(StoreProfileRequest $request): ProfileResource
     {
+        $imagePath = asset(Profile::BASLINE_IMAGE_PROFILE_PATH);
         $profile = Profile::create([
             'lastName' => $request->input('lastName'),
             'firstName' => $request->input('firstName'),
         ]);
         $image = $request->file('image');
         $imagePath = 'user_'.$profile->id;
-        $storageLink = Storage::disk('public_images')->put($imagePath, $image);
+        try {
+            $storageLink = Storage::disk('public_images')->put($imagePath, $image);
+            $imagePath = asset('images/'.$storageLink);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 400);
+        }
 
-        $profile->image = asset('images/'.$storageLink);
+        $profile->image = $imagePath;
         $profile->save();
 
         return new ProfileResource($profile);
