@@ -8,6 +8,7 @@ use App\Http\Resources\ProfileResource;
 use App\Models\Profile;
 use App\Models\Status;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -25,7 +26,16 @@ class ProfileController extends Controller
      */
     public function store(StoreProfileRequest $request): ProfileResource
     {
-        $profile = Profile::create($request->validated());
+        $profile = Profile::create([
+            'lastName' => $request->input('lastName'),
+            'firstName' => $request->input('firstName'),
+        ]);
+        $image = $request->file('image');
+        $imagePath = 'user_'.$profile->id;
+        $storageLink = Storage::disk('public_images')->put($imagePath, $image);
+
+        $profile->image = asset('images/'.$storageLink);
+        $profile->save();
 
         return new ProfileResource($profile);
     }
