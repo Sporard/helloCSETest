@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RefreshTokenRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use App\Services\AuthServices;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +13,6 @@ use Illuminate\Support\Str;
 
 class ApiAuthController extends Controller
 {
-    public function __construct(protected AuthServices $authServices)
-    {
-    }
-
     /**
      * Register new user
      */
@@ -29,8 +23,7 @@ class ApiAuthController extends Controller
         $newUser['remember_token'] = Str::random(10);
         $user = User::create($newUser);
         try {
-            $passportToken = $this->authServices->getPassportToken($request->input('email'), $request->input('password'));
-            $user['token'] = $passportToken;
+            $user['token'] = $user->createToken('auth')->accessToken;
 
             return response()->json($user, 200);
         } catch (Exception $e) {
@@ -47,11 +40,11 @@ class ApiAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            /** @var User $user */
             $user = Auth::user();
 
             try {
-                $passportToken = $this->authServices->getPassportToken($request->input('email'), $request->input('password'));
-                $user['token'] = $passportToken;
+                $user['token'] = $user->createToken('auth')->accessToken;
 
                 return response()->json($user, 200);
             } catch (Exception $e) {
@@ -68,12 +61,16 @@ class ApiAuthController extends Controller
 
     /**
      * refresh the token
+     *
      * @throws Exception
      */
-    public function refresh(RefreshTokenRequest $request): JsonResponse
+    public function refresh(): JsonResponse
     {
         try {
-            $this->authServices->refreshToken($request->input('refresh_token'));
+            /** @var User $user */
+            $user = Auth::user();
+            $user->token()->refreshToken();
+
             return response()->json('token refreshed', 200);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
@@ -91,11 +88,13 @@ class ApiAuthController extends Controller
     }
 
     /**
-     * logout the user
+     * revoke the access token of the user
      */
     public function revokeToken(): JsonResponse
     {
-        Auth::user()->token()->revoke();
+        /** @var User $user */
+        $user = Auth::user();
+        $user->token()->revoke();
 
         return response()->json([
             'message' => 'Token revoked',

@@ -6,13 +6,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(ApiAuthController::class)
     ->group(function () {
+        /** @uses ApiAuthController::register() */
         Route::post('register', 'register');
+        /** @uses ApiAuthController::login() */
         Route::post('login', 'login');
-        Route::post('refresh', 'refresh');
         Route::group(['middleware' => 'auth:api'], function () {
+            /** @uses ApiAuthController::refresh() */
+            Route::post('refresh', 'refresh');
+            /** @uses ApiAuthController::me() */
             Route::get('me', 'me');
             Route::prefix('token')
                 ->group(function () {
+                    /** @uses ApiAuthController::revokeToken() */
                     Route::post('revoke', 'revokeToken');
                 });
         });
