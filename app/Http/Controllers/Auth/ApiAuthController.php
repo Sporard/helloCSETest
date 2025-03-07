@@ -88,7 +88,7 @@ class ApiAuthController extends Controller
     }
 
     /**
-     * logout the user
+     * revoke the access token of the user
      */
     public function revokeToken(): JsonResponse
     {
