@@ -12,7 +12,6 @@ class StoreProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // TODO add auth
         return true;
     }
 
@@ -26,7 +25,7 @@ class StoreProfileRequest extends FormRequest
         return [
             'firstName' => ['required', 'string', 'max:255'],
             'lastName' => ['required', 'string', 'max:255'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ];
     }
 }

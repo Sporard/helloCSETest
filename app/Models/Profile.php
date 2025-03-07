@@ -20,6 +20,8 @@ class Profile extends Model
 {
     use HasFactory;
 
+    public const BASLINE_IMAGE_PROFILE_PATH = 'baseline_image.jpg';
+
     protected $table = 'profiles';
 
     protected $connection = 'mysql';
@@ -49,7 +51,7 @@ class Profile extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
+            get: fn (string $value) => ucfirst($value),
         );
     }
 
@@ -59,7 +61,7 @@ class Profile extends Model
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
+            get: fn (string $value) => ucfirst($value),
         );
     }
 }
