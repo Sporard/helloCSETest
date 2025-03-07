@@ -8,8 +8,8 @@ Route::controller(ApiAuthController::class)
     ->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login');
-        Route::post('refresh', 'refresh');
         Route::group(['middleware' => 'auth:api'], function () {
+            Route::post('refresh', 'refresh');
             Route::get('me', 'me');
             Route::prefix('token')
                 ->group(function () {
