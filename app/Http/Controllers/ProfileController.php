@@ -8,6 +8,7 @@ use App\Http\Resources\ProfileResource;
 use App\Models\Profile;
 use App\Models\Status;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,17 +26,16 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProfileRequest $request): ProfileResource
+    public function store(StoreProfileRequest $request): ProfileResource|JsonResponse
     {
-        $imagePath = asset(Profile::BASLINE_IMAGE_PROFILE_PATH);
         $profile = Profile::create([
             'lastName' => $request->input('lastName'),
             'firstName' => $request->input('firstName'),
         ]);
         $image = $request->file('image');
-        $imagePath = 'user_'.$profile->id;
+        $imageFolder = 'user_'.$profile->id;
         try {
-            $storageLink = Storage::disk('public_images')->put($imagePath, $image);
+            $storageLink = Storage::disk('public_images')->put($imageFolder, $image);
             $imagePath = asset('images/'.$storageLink);
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 400);
