@@ -23,10 +23,9 @@ test('get all profiles unauthenticated', closure: function () {
         });
     });
 });
-
 test('get all profiles authenticated', closure: function () {
 
-    Passport::actingAs(User::factory()->create());
+    Passport::actingAs(User::factory()->make());
     $response = $this->get('/api/profiles');
 
     $response->assertStatus(200);
@@ -67,7 +66,7 @@ test('get a profile unauthenticated', closure: function () {
 test('get a profile authenticated', closure: function () {
     /** @var Profile $testProfile */
     $testProfile = Profile::factory()->create();
-    Passport::actingAs(User::factory()->create());
+    Passport::actingAs(User::factory()->make());
     $response = $this->get('/api/profiles/'.$testProfile->id);
     $response->assertStatus(200);
     $response->assertJsonIsObject(key: 'data');
