@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +17,7 @@ class ApiAuthController extends Controller
     /**
      * Register new user
      */
-    public function register(RegisterRequest $request): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse|UserResource
     {
         $newUser = $request->validated();
         $newUser['email_verified_at'] = now();
@@ -25,7 +26,7 @@ class ApiAuthController extends Controller
         try {
             $user['token'] = $user->createToken('auth')->accessToken;
 
-            return response()->json($user, 200);
+            return new UserResource($user);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
@@ -37,16 +38,15 @@ class ApiAuthController extends Controller
      *
      * @throws Exception
      */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse|UserResource
     {
         if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
             /** @var User $user */
             $user = Auth::user();
-
             try {
                 $user['token'] = $user->createToken('auth')->accessToken;
 
-                return response()->json($user, 200);
+                return new UserResource($user);
             } catch (Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 400);
             }
@@ -80,11 +80,11 @@ class ApiAuthController extends Controller
     /**
      * Return auth user data
      */
-    public function me(): JsonResponse
+    public function me(): UserResource
     {
         $me = Auth::user();
 
-        return response()->json(compact('me'), 200);
+        return new UserResource($me);
     }
 
     /**
