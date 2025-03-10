@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -80,9 +81,10 @@ class ApiAuthController extends Controller
     /**
      * Return auth user data
      */
-    public function me(): UserResource
+    public function me(Request $request): UserResource
     {
         $me = Auth::user();
+        $me['token'] = $request->bearerToken();
 
         return new UserResource($me);
     }
