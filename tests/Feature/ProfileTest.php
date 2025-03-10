@@ -158,3 +158,29 @@ test('update a profile unauthenticated', closure: function () {
     $response = $this->put('/api/profiles/1');
     $response->assertStatus(401);
 });
+test('update a profile authenticated', closure: function () {
+    /** @var Profile $testProfile */
+    $testProfile = Profile::factory()->make();
+    Passport::actingAs(User::factory()->make());
+
+    $response = $this->put('/api/profiles/1', [
+        'firstName' => $testProfile->firstName,
+        'lastName' => $testProfile->lastName,
+        'image' => UploadedFile::fake()->image($testProfile->image),
+        'status' => $testProfile->status->value,
+    ]);
+    $response->assertStatus(200);
+    $response->assertJson(function (AssertableJson $json) use ($testProfile) {
+        $json->has(key: 'data');
+        $json->whereAllType([
+            'data.id' => 'integer',
+            'data.last_name' => 'string',
+            'data.first_name' => 'string',
+            'data.image' => 'string',
+            'data.status' => 'string',
+        ]);
+        $json->where('data.last_name', $testProfile->lastName)
+            ->where('data.first_name', $testProfile->firstName)
+            ->where('data.status', $testProfile->status->value);
+    });
+});
