@@ -111,7 +111,7 @@ test('create a profile authenticated', closure: function () {
     ]);
 
     $response->assertStatus(201);
-    $response->assertJson(function (AssertableJson $json) {
+    $response->assertJson(function (AssertableJson $json) use ($testProfile) {
         $json->has(key: 'data');
         $json->whereAllType([
             'data.id' => 'integer',
@@ -120,7 +120,11 @@ test('create a profile authenticated', closure: function () {
             'data.image' => 'string',
             'data.status' => 'string',
         ]);
+        $json->where('data.last_name', $testProfile->lastName)
+            ->where('data.first_name', $testProfile->firstName)
+            ->where('data.status', $testProfile->status);
     });
+
 });
 test('destroy a profile unauthenticated', closure: function () {
 
