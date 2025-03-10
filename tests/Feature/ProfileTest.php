@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Profile;
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -103,7 +104,9 @@ test('create a profile unauthenticated', closure: function () {
 test('create a profile authenticated', closure: function () {
 
     /** @var Profile $testProfile */
-    $testProfile = Profile::factory()->make();
+    $testProfile = Profile::factory()->make([
+        'status' => Status::PENDING,
+    ]);
     Passport::actingAs(User::factory()->make());
     $response = $this->post('/api/profiles', [
         'firstName' => $testProfile->firstName,
