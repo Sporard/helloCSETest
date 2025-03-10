@@ -82,6 +82,12 @@ test('get a profile authenticated', closure: function () {
         ]);
     });
 });
+test('get a profile not found', closure: function () {
+    /** @var Profile $testProfile */
+    Passport::actingAs(User::factory()->make());
+    $response = $this->get('/api/profiles/-1');
+    $response->assertStatus(404);
+});
 test('create a profile unauthenticated', closure: function () {
 
     $testProfile = Profile::factory()->make();
