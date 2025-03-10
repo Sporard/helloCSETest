@@ -151,3 +151,10 @@ test('destroy a profile not found', closure: function () {
     $response = $this->delete('/api/profiles/-1');
     $response->assertStatus(404);
 });
+test('update a profile unauthenticated', closure: function () {
+    /** @var Profile $testProfile */
+    $testProfile = Profile::factory()->create();
+
+    $response = $this->put('/api/profiles/1');
+    $response->assertStatus(401);
+});
