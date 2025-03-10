@@ -81,7 +81,8 @@ class ProfileController extends Controller
      */
     public function destroy(Profile $profile): bool
     {
-        // TODO Delete profile images
+        $this->profileService->deleteImages($profile->id);
+
         return $profile->delete();
     }
 }
