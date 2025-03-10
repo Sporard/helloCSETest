@@ -131,3 +131,11 @@ test('destroy a profile authenticated', closure: function () {
     $response = $this->delete('/api/profiles/'.$testProfile->id);
     $response->assertStatus(200);
 });
+test('destroy a profile not found', closure: function () {
+
+    /** @var Profile $testProfile */
+    $testProfile = Profile::factory()->create();
+    Passport::actingAs(User::factory()->make());
+    $response = $this->delete('/api/profiles/-1');
+    $response->assertStatus(404);
+});
