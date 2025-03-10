@@ -23,8 +23,8 @@ class ProfileFactory extends Factory
             'firstName' => fake()->name(),
             'image' => asset(Profile::BASLINE_IMAGE_PROFILE_PATH),
             'status' => fake()->randomElement(Status::cases())->value,
-            'created_at' => fake()->dateTime(),
-            'updated_at' => fake()->dateTime(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

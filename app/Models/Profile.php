@@ -24,8 +24,6 @@ class Profile extends Model
 
     protected $table = 'profiles';
 
-    protected $connection = 'mysql';
-
     protected $primaryKey = 'id';
 
     protected $fillable = [
