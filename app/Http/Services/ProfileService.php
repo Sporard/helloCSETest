@@ -27,4 +27,9 @@ class ProfileService
 
         return $imagePath;
     }
+
+    public function deleteImages(int $profileId): bool
+    {
+        return Storage::disk(ProfileService::STORAGE_DISK)->deleteDirectory('user_'.$profileId);
+    }
 }
