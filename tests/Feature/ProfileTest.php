@@ -92,7 +92,9 @@ test('create a profile unauthenticated', closure: function () {
 
     $testProfile = Profile::factory()->make();
     $response = $this->post('/api/profiles', [
-        $testProfile->toArray(),
+        'firstName' => $testProfile->firstName,
+        'lastName' => $testProfile->lastName,
+        'image' => UploadedFile::fake()->image($testProfile->image),
     ]);
 
     $response->assertStatus(401);
