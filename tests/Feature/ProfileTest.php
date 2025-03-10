@@ -116,3 +116,18 @@ test('create a profile authenticated', closure: function () {
         ]);
     });
 });
+test('destroy a profile unauthenticated', closure: function () {
+
+    /** @var Profile $testProfile */
+    $testProfile = Profile::factory()->create();
+    $response = $this->delete('/api/profiles/'.$testProfile->id);
+    $response->assertStatus(401);
+});
+test('destroy a profile authenticated', closure: function () {
+
+    /** @var Profile $testProfile */
+    $testProfile = Profile::factory()->create();
+    Passport::actingAs(User::factory()->make());
+    $response = $this->delete('/api/profiles/'.$testProfile->id);
+    $response->assertStatus(200);
+});
